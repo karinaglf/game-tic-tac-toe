@@ -1,0 +1,43 @@
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.game-container {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.board {
+    width: 90vw;
+    height: 90vw;
+    margin: 0 auto;
+    /* background-color: #34495e;
+    color: #fff; */
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    gap: 10px;
+}
+.cell {
+    border: #fff solid 1px;
+    background-color: #34495e;
+    color: #fff;
+    font-size: 4rem;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+
+}
+.score {
+    display: flex;
+    gap: 3rem;
+    font-size: 1.6rem;
+}
+.player-score > span {
+    margin-left: 10px;
+}
+@media (min-width: 600px) {
+    .board {
+        width: 600px;
+        height: 600px;
+    }
+}
