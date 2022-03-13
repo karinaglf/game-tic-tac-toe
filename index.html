@@ -8,15 +8,25 @@
 		<title>Tic Tac Toe</title>
 	</head>
 	<body>
+		<h1>Let's Play</h1>
+		<div class="start-screen" id="start-screen">
+			<form id="form">
+				<label for="player1-name">Player1:</label>
+				<input type="text" id="player1-name" name="player1-name" required /><br />
+				<label for="player2-name">Player2:</label>
+				<input type="text" id="player2-name" name="player2-name" required /><br />
+				<!-- <button type="submit" id="start-btn">Start Game</button> -->
+				<a type="submit" class='btn' id="start-btn" href="#">Start Game</a>
+			</form>
+		</div>
 		<div class="game-container" id="game-container">
-			<h1>Let's Play</h1>
 			<div class="score">
 				<p class="player-score" id="player1-score"><span></span></p>
 				<p class="player-score" id="player2-score"><span></span></p>
 			</div>
 			<div class="board" id="board"></div>
-			<button id="restart-btn">Restart</button>
-
+			<h2 id="message"></h2>
+			<a class='btn' id="restart-btn">Restart</a>
 		</div>
 		<script src="app.js"></script>
 	</body>

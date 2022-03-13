@@ -4,9 +4,14 @@
 // Create Game Logic
 
 //DOM Elements
+const startScreen = document.getElementById('start-screen');
 const gameContainer = document.getElementById('game-container');
 const board = document.getElementById('board');
+const startBtn = document.getElementById('start-btn');
 const restartBtn = document.getElementById('restart-btn');
+const message = document.getElementById('message');
+const playerOneInput = document.getElementById('player1-name');
+const playerTwoInput = document.getElementById('player2-name');
 const playerOneScore = document.getElementById('player1-score');
 const playerTwoScore = document.getElementById('player2-score');
 
@@ -22,25 +27,40 @@ const winningSequences = [
 	[2, 4, 6],
 ];
 
+let game;
+
 class Game {
 	constructor(player1, player2) {
 		this.player1 = { name: player1, symbol: 'x', score: 0 };
 		this.player2 = { name: player2, symbol: 'o', score: 0 };
-		this.boardGrid = ['', '', '', '', '', '', '', '', ''];
+		this.boardGrid = [];
 		this.turn = this.player1;
 		this.isGameOver = false;
 	}
 
-    start() {
-        this.isGameOver = false;
-        this.boardGrid = ['', '', '', '', '', '', '', '', ''];        
-        this.drawScore();
-        this.drawGame();
+	start() {
+		//hide start screen
+		startScreen.style.display = 'none';
+		//show game screen
+		gameContainer.style.display = 'flex';
+        message.innerText = `Next turn ${this.turn.name}`;
+		this.isGameOver = false;
+		this.boardGrid = ['', '', '', '', '', '', '', '', ''];
+		this.drawScore();
+		this.drawGame();
+	}
+
+	restart() {
+        message.innerText = `Next turn ${this.turn.name}`;
+		this.isGameOver = false;
+		this.boardGrid = ['', '', '', '', '', '', '', '', ''];
+		this.drawScore();
+		this.drawGame();
 	}
 
 	// Draw Elements
 	drawGame() {
-        board.innerHTML = '';
+		board.innerHTML = '';
 		// Board
 		this.boardGrid.forEach((element, index) => {
 			const cell = document.createElement('div');
@@ -52,20 +72,18 @@ class Game {
 		});
 	}
 
-    drawScore() {
-        // Score
+	drawScore() {
+		// Score
 		playerOneScore.innerHTML = `${this.player1.name}: <span>${this.player1.score}</span>`;
-		playerTwoScore.innerHTML = `${this.player2.name}: <span>${this.player2.score}</span>`;  
-    }
+		playerTwoScore.innerHTML = `${this.player2.name}: <span>${this.player2.score}</span>`;
+	}
 
 	// Logic
 
 	gameOver() {
         this.isGameOver = true;
-		const gameOverMessage = document.createElement('h2');
-		gameOverMessage.innerHTML = `${this.turn.name} won the game!`;
-		gameContainer.appendChild(gameOverMessage);
-        this.turn.score = this.turn.score + 1;
+		message.innerText = `${this.turn.name} won the game!`;
+		this.turn.score = this.turn.score + 1;
 	}
 
 	makePlay(index) {
@@ -75,12 +93,12 @@ class Game {
 
 			//Select cell
 			this.boardGrid[index] = this.turn.symbol;
-			// board.innerHTML = '';
 			this.drawGame();
 			this.checkResult(this.turn.symbol);
 
 			//Change player
 			this.turn = this.turn == this.player1 ? this.player2 : this.player1;
+            message.innerText = `Next turn ${this.turn.name}`;
 		}
 	}
 
@@ -100,6 +118,13 @@ class Game {
 	}
 }
 
-const play = new Game('Karina', 'Adriano');
-play.start();
-restartBtn.addEventListener('click', () => play.start())
+restartBtn.addEventListener('click', () => game.restart());
+
+startBtn.addEventListener('click', () => {
+
+    if(!playerOneInput.value) playerOneInput.value = "Player1"
+    if(!playerTwoInput.value) playerTwoInput.value = "Player2"
+
+	game = new Game(playerOneInput.value, playerTwoInput.value);
+	game.start();
+});
