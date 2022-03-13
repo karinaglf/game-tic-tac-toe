@@ -1,8 +1,3 @@
-// Grab DOM Elements
-// Define Game Elements and Controllers on Constructor
-// Style Game Board
-// Create Game Logic
-
 //DOM Elements
 const startScreen = document.getElementById('start-screen');
 const gameContainer = document.getElementById('game-container');
@@ -38,39 +33,7 @@ class Game {
 		this.isGameOver = false;
 	}
 
-	start() {
-		//hide start screen
-		startScreen.style.display = 'none';
-		//show game screen
-		gameContainer.style.display = 'flex';
-        message.innerText = `Next turn ${this.turn.name}`;
-		this.isGameOver = false;
-		this.boardGrid = ['', '', '', '', '', '', '', '', ''];
-		this.drawScore();
-		this.drawGame();
-	}
-
-	restart() {
-        message.innerText = `Next turn ${this.turn.name}`;
-		this.isGameOver = false;
-		this.boardGrid = ['', '', '', '', '', '', '', '', ''];
-		this.drawScore();
-		this.drawGame();
-	}
-
 	// Draw Elements
-	drawGame() {
-		board.innerHTML = '';
-		// Board
-		this.boardGrid.forEach((element, index) => {
-			const cell = document.createElement('div');
-			cell.innerText = element;
-			cell.setAttribute('class', 'cell');
-			cell.setAttribute('data-id', index);
-			cell.addEventListener('click', () => this.makePlay(index));
-			board.appendChild(cell);
-		});
-	}
 
 	drawScore() {
 		// Score
@@ -78,15 +41,55 @@ class Game {
 		playerTwoScore.innerHTML = `${this.player2.name}: <span>${this.player2.score}</span>`;
 	}
 
+    updateMessages() {
+        if(this.isGameOver) {
+            message.innerText = `${this.turn.name} won the game!`;
+        } else {
+            message.innerText = `It's ${this.turn.name}'s turn`;
+        }
+    }
+
+    drawGame() {
+		board.innerHTML = '';
+        this.updateMessages();
+		// Board
+		this.boardGrid.forEach((element, index) => {
+			const cell = document.createElement('div');
+			cell.innerText = element;
+			cell.setAttribute('class', 'cell');
+			cell.setAttribute('id', index);
+			cell.addEventListener('click', () => this.makePlay(index));
+			board.appendChild(cell);
+		});
+	}
+
 	// Logic
+
+    start() {
+		//hide start screen
+		startScreen.style.display = 'none';
+		//show game screen
+		gameContainer.style.display = 'flex';
+		this.isGameOver = false;
+		this.boardGrid = ['', '', '', '', '', '', '', '', ''];
+		this.drawScore();
+		this.drawGame();
+	}
+
+	restart() {
+		this.isGameOver = false;
+		this.boardGrid = ['', '', '', '', '', '', '', '', ''];
+		this.drawScore();
+		this.drawGame();
+	}
 
 	gameOver() {
         this.isGameOver = true;
-		message.innerText = `${this.turn.name} won the game!`;
 		this.turn.score = this.turn.score + 1;
 	}
 
 	makePlay(index) {
+
 		if (!this.isGameOver) {
 			//Prevent player from clicking on a selected cell
 			if (this.boardGrid[index] !== '') return false;
@@ -96,9 +99,9 @@ class Game {
 			this.drawGame();
 			this.checkResult(this.turn.symbol);
 
+
 			//Change player
-			this.turn = this.turn == this.player1 ? this.player2 : this.player1;
-            message.innerText = `Next turn ${this.turn.name}`;
+			this.turn = (this.turn == this.player1 ? this.player2 : this.player1);
 		}
 	}
 
@@ -110,13 +113,27 @@ class Game {
 				this.boardGrid[winningSequences[i][2]] == symbol
 			) {
 				console.log('Match:' + winningSequences[i]);
+                message.innerText = `${this.turn.name} won the game!`;
 				this.gameOver();
-				return i;
+                this.addStyleToWinner(i)
+                return i;
 			}
 			return;
 		});
 	}
+
+    addStyleToWinner (sequence) {
+        console.log(winningSequences[sequence])
+        winningSequences[sequence].forEach((item) => {
+            const winningCell = document.getElementById(item)
+            winningCell.style.backgroundColor = '#5C404D';
+            console.log(winningCell)
+        })
+    }
+
 }
+
+// Event Listeners
 
 restartBtn.addEventListener('click', () => game.restart());
 
