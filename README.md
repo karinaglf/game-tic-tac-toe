@@ -1,4 +1,4 @@
-# My Wordle Game
+# Tic Tac Toe Game
 <br>
 
 ## Description
