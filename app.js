@@ -36,7 +36,6 @@ class Game {
 	// Draw Elements
 
 	drawScore() {
-		// Score
 		playerOneScore.innerHTML = `${this.player1.name}: <span>${this.player1.score}</span>`;
 		playerTwoScore.innerHTML = `${this.player2.name}: <span>${this.player2.score}</span>`;
 	}
@@ -91,6 +90,7 @@ class Game {
 	makePlay(index) {
 
 		if (!this.isGameOver) {
+
 			//Prevent player from clicking on a selected cell
 			if (this.boardGrid[index] !== '') return false;
 
@@ -123,11 +123,9 @@ class Game {
 	}
 
     addStyleToWinner (sequence) {
-        console.log(winningSequences[sequence])
         winningSequences[sequence].forEach((item) => {
             const winningCell = document.getElementById(item)
             winningCell.style.backgroundColor = '#5C404D';
-            console.log(winningCell)
         })
     }
 
